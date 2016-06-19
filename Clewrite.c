@@ -44,7 +44,7 @@ void ClearBuffer()
     }
 }
 
-void Wrapping(char *string, FILE* filedest)
+void Wrapping(char const *string, FILE* filedest)
 {
     ///Réecriture des wrapper mot à mot
 
