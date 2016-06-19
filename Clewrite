@@ -80,7 +80,9 @@ void Wrapping(char *string, FILE* filedest)
             for (cpt; cpt <= j; ++cpt)
             {
                 if (string[cpt] != '\0')
+                {
                     fputc(string[cpt], filedest);
+            	}
             }
             if (string[j+1] != '\n')
             {
