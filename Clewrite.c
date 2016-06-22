@@ -20,15 +20,15 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
-#include<time.h>
+#include <time.h>
 
 #define MAX_LENGTH 2000
 
-void delay(unsigned int mseconds)
+void delay(unsigned int ms)
 {
     ///Créé un délai, utilisations diverses
 
-    clock_t goal = mseconds + clock();
+    clock_t goal = ms + clock();
     while (goal > clock());
 }
 
@@ -48,13 +48,13 @@ void Wrapping(char const *string, FILE* filedest)
 {
     ///Réecriture des wrapper mot à mot
 
-    int cpt=0;
-    char WrappBegin[MAX_LENGTH]="[wrap text=\"", WrappMid[MAX_LENGTH]="\"]", WrappEnd[MAX_LENGTH]=" [w]\n";
+    int cpt=0, index=0, j=0;
+    char WrappBegin[MAX_LENGTH]="[wrap text=\"", WrappMid[MAX_LENGTH]="\"]", WrappEnd[MAX_LENGTH]="[w]\n";
     char WordCpy[MAX_LENGTH]="";
 
     fputs(WrappBegin, filedest);
 
-    for (int j=0; string[j+1] != '\0'; ++j)
+    for (j; string[j+1] != '\0'; ++j)
     {
         if (string[j] == '"')
         {
@@ -80,20 +80,23 @@ void Wrapping(char const *string, FILE* filedest)
             for (cpt; cpt <= j; ++cpt)
             {
                 if (string[cpt] != '\0')
-                {
                     fputc(string[cpt], filedest);
-            	}
             }
+
             if (string[j+1] != '\n')
             {
                 fputs(WrappBegin, filedest);
             }
         }
     }
+
+    if (string[j-1] != ' ')
+        fputc(' ', filedest);
+
     fputs(WrappEnd, filedest);
 }
 
-void CharRewriter(char *string, FILE* filedest)
+void CharRewriter(char const *string, FILE* filedest)
 {
     ///Appel la fonction wrapping
 
@@ -118,10 +121,13 @@ void rewrite(char *strings, FILE* filesrc, FILE* filedest)
         }
         else if (strings[0] == '*')
         {
-            fputs("\n", filedest);
             fputs(strings, filedest);
         }
         else if (strings[0] == '[')
+        {
+            fputs(strings, filedest);
+        }
+        else if (strings[0] == '\n')
         {
             fputs(strings, filedest);
         }
@@ -142,7 +148,7 @@ void rewrite(char *strings, FILE* filesrc, FILE* filedest)
     }
 }
 
-void CleanerChar(char *string, FILE* filedest)
+void CleanerChar(char const *string, FILE* filedest)
 {
     ///Supprime les wrapper des dialogues
 
@@ -176,11 +182,7 @@ void CleanerStrings(char *strings, FILE* filesrc, FILE* filedest)
     {
         if (!((strings[0] == '[') && (strings[1] == 'w') && (strings[2] == 'r') || (strings[0] == '[') && (strings[1] == 's') && (strings[3] == 'N')))  //Si c'est des wrapper on passe directement au else
         {
-            if (strings[0] == '*')
-                fputs("\n", filedest);
-
-            if (strings[0] !=  '\n')
-                fputs(strings, filedest);   //écrit la chaine dans le fichier
+            fputs(strings, filedest);   //écrit la chaine dans le fichier
         }
         else
         {
@@ -202,15 +204,15 @@ void CleanerStrings(char *strings, FILE* filesrc, FILE* filedest)
     }
 }
 
-int readchar(char *string, int length)
+int readchar(char *path, int length)
 {
     ///Permet de supprimer '\n' de la chaine de caractère
 
     char *positionEntry = NULL;
 
-    if (fgets(string, length, stdin) != NULL)
+    if (fgets(path, length, stdin) != NULL)
     {
-        positionEntry = strchr(string, '\n');
+        positionEntry = strchr(path, '\n');
         if (positionEntry != NULL)
         {
             *positionEntry = '\0';
@@ -230,7 +232,7 @@ int readchar(char *string, int length)
 
 int main()
 {
-    ///Le main fait l'ouverture du fichier et appelera les fonctions nécessaires au nettoyage ou à la reconstruction des wrapper du fichier entré
+    ///Le main fait l'ouverture des fichier, choix des options et appelera les fonctions nécessaires au nettoyage ou à la reconstruction des wrapper du fichier entré
 
 	FILE* filesrc = NULL;
 	FILE* filedest = NULL;
@@ -241,10 +243,10 @@ int main()
 	printf("     Program created by Tsukasa, founder of DotHackers\n\n");
 	delay(100);
 
-    printf("     Nettoyage = 1\n     Creation du wordwrapping = 2(pas fonctionnel pour le moment)\n\n-> ");
+    printf("     Nettoyage = 1\n     Creation du wordwrapping = 2(QUELQUES BUGS)\n\n-> ");
     scanf("%d", &choice);
 
-    if (choice == 1)
+    if (choice == 1)       //Nettoyage des scripts
     {
         ClearBuffer();
 
@@ -252,7 +254,7 @@ int main()
         readchar(path, 100);
 
         strcpy(path2, path);
-        //Concaténation du nom de fichier avec l'extension voulue
+                                //Concaténation du nom de fichier avec l'extension voulue
         strcat(path, ".ks");
 
         filesrc = fopen(path, "r+");
@@ -269,7 +271,7 @@ int main()
                 long ftell(FILE* filesrc);
                 if (ftell != 0)
                 {
-                    void rewind(FILE* filesrc);//remet le curseur virtuel à zéro
+                    void rewind(FILE* filesrc); //remet le curseur virtuel à zéro
                 }
 
                 CleanerStrings(strings, filesrc, filedest);
@@ -283,7 +285,7 @@ int main()
             return -1;
         }
     }
-    else if (choice == 2)
+    else if (choice == 2)   //Création du wordwrapping
     {
         ClearBuffer();
 
@@ -291,7 +293,7 @@ int main()
         readchar(path, 100);
 
         strcpy(path2, path);
-        //Concaténation du nom de fichier avec l'extension voulue
+                                //Concaténation du nom de fichier avec l'extension voulue
         strcat(path, ".txt");
 
         filesrc = fopen(path, "r+");
@@ -308,7 +310,7 @@ int main()
                 long ftell(FILE* filesrc);
                 if (ftell != 0)
                 {
-                    void rewind(FILE* filesrc);//remet le curseur virtuel à zéro
+                    void rewind(FILE* filesrc); //remet le curseur virtuel à zéro
                 }
 
                 rewrite(strings, filesrc, filedest);
