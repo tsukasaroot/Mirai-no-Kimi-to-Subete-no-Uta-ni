@@ -19,8 +19,10 @@
 
 #include <string.h>
 #include <stdlib.h>
+#include <stdbool.h>
 #include <stdio.h>
 #include <time.h>
+#include <wchar.h>
 
 #define MAX_LENGTH 2000
 
@@ -48,7 +50,7 @@ void Wrapping(char const *string, FILE* filedest)
 {
     ///Réecriture des wrapper mot à mot
 
-    int cpt=0, index=0, j=0;
+    int cpt=0, j=0;
     char WrappBegin[MAX_LENGTH]="[wrap text=\"", WrappMid[MAX_LENGTH]="\"]", WrappEnd[MAX_LENGTH]="[w]\n";
     char WordCpy[MAX_LENGTH]="";
 
@@ -60,9 +62,31 @@ void Wrapping(char const *string, FILE* filedest)
         {
             fputc('-', filedest);
         }
-        else if(string[j] == '\0')
+        else if (string[j] == ' ' && string[j+1] == '!' && string[j+2] == '?')  //attache les ponctuations complexes avec le mot précédent
         {
-            fputs(WrappEnd, filedest);
+            for (int i=0; i <= 2; ++i)
+            {
+                fputc(string[j], filedest);
+                ++j;
+
+                if (string[j] == '"')
+                {
+                    fputc('-', filedest);
+                }
+            }
+        }
+        else if (string[j] == ' ' && string[j+1] == '?' || string[j] == ' ' && string[j+1] == '!')  //attache les ponctuations avec le mot précédent
+        {
+            for (int i=0; i < 2; ++i)
+            {
+                fputc(string[j], filedest);
+                ++j;
+
+                if (string[j] == '"')
+                {
+                    fputc('-', filedest);
+                }
+            }
         }
         else
         {
@@ -96,18 +120,9 @@ void Wrapping(char const *string, FILE* filedest)
     fputs(WrappEnd, filedest);
 }
 
-void CharRewriter(char const *string, FILE* filedest)
-{
-    ///Appel la fonction wrapping
-
-    Wrapping(string, filedest);
-}
-
 void rewrite(char *strings, FILE* filesrc, FILE* filedest)
 {
     ///Réecrit toutes les fonctions sauf les dialogues
-
-    fgets(strings, MAX_LENGTH, filesrc);
 
     while (!feof(filesrc))
     {
@@ -131,16 +146,16 @@ void rewrite(char *strings, FILE* filesrc, FILE* filedest)
         {
             fputs(strings, filedest);
         }
-        else if (strings[0] != '\0' && strings[0] != '\n')
+        else if (strings[0] != '\0')
         {
-            CharRewriter(strings, filedest);
+            Wrapping(strings, filedest);
         }
 
         fgets(strings, MAX_LENGTH, filesrc);
 
         if (feof(filesrc))
         {
-            printf("\n\nOperation terminee.\n\n");
+            wprintf(L"\n\nOpération terminée.\n\n");
 
             fclose(filedest);
             delay(3000);
@@ -230,31 +245,29 @@ int readchar(char *path, int length)
     }
 }
 
-int main()
+int prog()
 {
-    ///Le main fait l'ouverture des fichier, choix des options et appelera les fonctions nécessaires au nettoyage ou à la reconstruction des wrapper du fichier entré
+    FILE* filesrc = NULL;
+    FILE* filedest = NULL;
 
-	FILE* filesrc = NULL;
-	FILE* filedest = NULL;
+    int choice = 0;
+    char path[100], path2[100], strings[MAX_LENGTH] = "";
 
-	int choice = 0;
-	char path[100], path2[100], strings[MAX_LENGTH] = "";
+    printf("     Program created by Tsukasa, founder of DotHackers\n\n");
+    delay(100);
 
-	printf("     Program created by Tsukasa, founder of DotHackers\n\n");
-	delay(100);
-
-    printf("     Nettoyage = 1\n     Creation du wordwrapping = 2(QUELQUES BUGS)\n\n-> ");
+    wprintf(L"     Nettoyage = 1\n     Création du wordwrapping = 2\n\n-> ");
     scanf("%d", &choice);
 
     if (choice == 1)       //Nettoyage des scripts
     {
         ClearBuffer();
 
-        printf("\n     Indiquer le chemin du fichier a copier.(sans l'extension)\n\n-> ");
+        wprintf(L"\n     Indiquer le chemin du fichier à copier.(sans l'extension)\n\n-> ");
         readchar(path, 100);
 
         strcpy(path2, path);
-                                //Concaténation du nom de fichier avec l'extension voulue
+                                    //Concaténation du nom de fichier avec l'extension voulue
         strcat(path, ".ks");
 
         filesrc = fopen(path, "r+");
@@ -280,7 +293,7 @@ int main()
         }
         else
         {
-            printf("  Impossible d'ouvrir le fichier source.");
+            printf("  Impossible d'ouvrir le fichier source.\n");
             delay(3000);
             return -1;
         }
@@ -289,11 +302,11 @@ int main()
     {
         ClearBuffer();
 
-        printf("\n     Indiquer le chemin du fichier a reecrire.(sans l'extension)\n\n-> ");
+        wprintf(L"\n     Indiquer le chemin du fichier a réecrire.(sans l'extension)\n\n-> ");
         readchar(path, 100);
 
         strcpy(path2, path);
-                                //Concaténation du nom de fichier avec l'extension voulue
+                            //Concaténation du nom de fichier avec l'extension voulue
         strcat(path, ".txt");
 
         filesrc = fopen(path, "r+");
@@ -306,7 +319,6 @@ int main()
 
             if (filedest != NULL)
             {
-
                 long ftell(FILE* filesrc);
                 if (ftell != 0)
                 {
@@ -319,17 +331,48 @@ int main()
         }
         else
         {
-            printf("  Impossible d'ouvrir le fichier source.");
+            printf("  Impossible d'ouvrir le fichier source.\n");
             delay(3000);
             return -1;
         }
     }
     else
     {
-        printf("  Option indisponible.");
+        printf("  Option indisponible.\n");
         delay(1000);
         return -2;
     }
 
-	return 0;
+    return 0;
+}
+
+int main()
+{
+    ///Le main appel prog() une première fois, puis boucle autant de fois qu'on en a besoin
+
+    int YoN;
+
+    prog();
+
+    do
+    {
+        ClearBuffer();
+
+        wprintf(L"   Avez-vous d'autres fichiers à nettoyer/reconstruire ?\n  Oui=1\n  Non=2\n");
+        scanf("%d", &YoN);
+
+        while (YoN != 1 && YoN != 2)
+        {
+            ClearBuffer();
+
+            wprintf(L"   Mauvaise touche, entrez 1 ou 2\n");
+            scanf("%d", &YoN);
+        }
+
+        if (YoN == 1)
+            prog();
+
+    }while (YoN == 1);
+
+    return 0;
 }
