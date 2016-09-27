@@ -1,0 +1,3 @@
+#On ignore les .ks et les .txt
+*.txt
+*.ks

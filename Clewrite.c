@@ -50,7 +50,7 @@ void Wrapping(char const *string, FILE* filedest)
 {
     ///Réecriture des wrapper mot à mot
 
-    int cpt=0, j=0;
+    int cpt = 0, j=0;
     char WrappBegin[MAX_LENGTH]="[wrap text=\"", WrappMid[MAX_LENGTH]="\"]", WrappEnd[MAX_LENGTH]="[w]\n";
     char WordCpy[MAX_LENGTH]="";
 
@@ -75,7 +75,7 @@ void Wrapping(char const *string, FILE* filedest)
                 }
             }
         }
-        else if (string[j] == ' ' && string[j+1] == '?' || string[j] == ' ' && string[j+1] == '!')  //attache les ponctuations avec le mot précédent
+        else if ((string[j] == ' ' && string[j+1] == '?') || (string[j] == ' ' && string[j+1] == '!'))  //attache les ponctuations avec le mot précédent
         {
             for (int i=0; i < 2; ++i)
             {
@@ -155,7 +155,7 @@ void rewrite(char *strings, FILE* filesrc, FILE* filedest)
 
         if (feof(filesrc))
         {
-            wprintf(L"\n\nOpération terminée.\n\n");
+            printf("\n\nOpération terminée.\n\n");
 
             fclose(filedest);
             delay(3000);
@@ -195,7 +195,7 @@ void CleanerStrings(char *strings, FILE* filesrc, FILE* filedest)
 
     while (!feof(filesrc))
     {
-        if (!((strings[0] == '[') && (strings[1] == 'w') && (strings[2] == 'r') || (strings[0] == '[') && (strings[1] == 's') && (strings[3] == 'N')))  //Si c'est des wrapper on passe directement au else
+        if ((!((strings[0] == '[') && (strings[1] == 'w') && (strings[2] == 'r')) || ((strings[0] == '[') && (strings[1] == 's') && (strings[3] == 'N'))))  //Si c'est des wrapper on passe directement au else
         {
             fputs(strings, filedest);   //écrit la chaine dans le fichier
         }
@@ -203,7 +203,7 @@ void CleanerStrings(char *strings, FILE* filesrc, FILE* filedest)
         {
             CleanerChar(strings, filedest); //on l'envoi à la fonction de nettoyage des wrapper
 
-            printf("%c", strings);
+            printf("%c", strings[1]);
             delay(1);
         }
 
@@ -256,14 +256,14 @@ int prog()
     printf("     Program created by Tsukasa, founder of DotHackers\n\n");
     delay(100);
 
-    wprintf(L"     Nettoyage = 1\n     Création du wordwrapping = 2\n\n-> ");
+    printf("     Nettoyage = 1\n     Création du wordwrapping = 2\n\n-> ");
     scanf("%d", &choice);
 
     if (choice == 1)       //Nettoyage des scripts
     {
         ClearBuffer();
 
-        wprintf(L"\n     Indiquer le chemin du fichier à copier.(sans l'extension)\n\n-> ");
+        printf("\n     Indiquer le chemin du fichier à copier.(sans l'extension)\n\n-> ");
         readchar(path, 100);
 
         strcpy(path2, path);
@@ -279,14 +279,7 @@ int prog()
             filedest = fopen(path2, "w+");
 
             if (filedest != NULL)
-            {
-
-                long ftell(FILE* filesrc);
-                if (ftell != 0)
-                {
-                    void rewind(FILE* filesrc); //remet le curseur virtuel à zéro
-                }
-
+      	    {
                 CleanerStrings(strings, filesrc, filedest);
             }
             fclose(filesrc);
@@ -302,7 +295,7 @@ int prog()
     {
         ClearBuffer();
 
-        wprintf(L"\n     Indiquer le chemin du fichier a réecrire.(sans l'extension)\n\n-> ");
+        printf("\n     Indiquer le chemin du fichier a réecrire.(sans l'extension)\n\n-> ");
         readchar(path, 100);
 
         strcpy(path2, path);
@@ -319,12 +312,6 @@ int prog()
 
             if (filedest != NULL)
             {
-                long ftell(FILE* filesrc);
-                if (ftell != 0)
-                {
-                    void rewind(FILE* filesrc); //remet le curseur virtuel à zéro
-                }
-
                 rewrite(strings, filesrc, filedest);
             }
             fclose(filesrc);
@@ -358,14 +345,14 @@ int main()
     {
         ClearBuffer();
 
-        wprintf(L"   Avez-vous d'autres fichiers à nettoyer/reconstruire ?\n  Oui=1\n  Non=2\n");
+        printf("   Avez-vous d'autres fichiers à nettoyer/reconstruire ?\n  Oui=1\n  Non=2\n");
         scanf("%d", &YoN);
 
         while (YoN != 1 && YoN != 2)
         {
             ClearBuffer();
 
-            wprintf(L"   Mauvaise touche, entrez 1 ou 2\n");
+            printf("   Mauvaise touche, entrez 1 ou 2\n");
             scanf("%d", &YoN);
         }
 
