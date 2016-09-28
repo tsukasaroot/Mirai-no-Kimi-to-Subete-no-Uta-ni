@@ -339,10 +339,10 @@ int main()
 
     int YoN;
 
-    prog();
-
     do
     {
+	prog();
+
         ClearBuffer();
 
         printf("   Avez-vous d'autres fichiers à nettoyer/reconstruire ?\n  Oui=1\n  Non=2\n");
@@ -356,9 +356,8 @@ int main()
             scanf("%d", &YoN);
         }
 
-        if (YoN == 1)
-            prog();
 
+        //   prog();
     }while (YoN == 1);
 
     return 0;
