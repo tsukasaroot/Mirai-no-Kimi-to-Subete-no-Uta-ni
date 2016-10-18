@@ -5,14 +5,14 @@
 ** Login   <jordan.roucom@epitech.net>
 ** 
 ** Started on  Sun Oct 16 14:01:35 2016 Jordan Rouco miguez
-** Last update Tue Oct 18 14:05:27 2016 Jordan Rouco miguez
+** Last update Tue Oct 18 17:52:29 2016 Jordan Rouco miguez
 */
 
+#include <unistd.h>
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include "include/main.h"
-#include <unistd.h>
 
 void wrapping(char const *string, FILE* filedest)
 {
