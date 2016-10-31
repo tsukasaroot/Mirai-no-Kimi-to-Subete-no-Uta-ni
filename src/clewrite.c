@@ -5,7 +5,7 @@
 ** Login   <jordan.roucom@epitech.net>
 **
 ** Started on  Sun Oct 16 14:01:35 2016 Jordan Rouco miguez
-** Last update Mon Oct 31 16:12:39 2016 Jordan Rouco miguez
+** Last update Mon Oct 31 16:17:39 2016 Jordan Rouco miguez
 */
 
 #include <unistd.h>
@@ -178,8 +178,6 @@ int	prog()
   FILE	*filedest = NULL;
   int	choice = 0;
 
-  printf("    Program created by Tsukasa, founder of DotHackers\n\n");
-  delay(100);
   printf("     Nettoyage = 1\n     Création du wordwrapping = 2\n\n-> ");
   scanf("%d", &choice);
   if (choice == 1)       //Nettoyage des scripts

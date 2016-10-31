@@ -5,7 +5,7 @@
 ** Login   <jordan.roucom@epitech.net>
 ** 
 ** Started on  Tue Oct 18 11:03:31 2016 Jordan Rouco miguez
-** Last update Tue Oct 18 13:32:37 2016 Jordan Rouco miguez
+** Last update Mon Oct 31 16:16:40 2016 Jordan Rouco miguez
 */
 
 #include <stdlib.h>
@@ -18,6 +18,8 @@ int main()
   ///Le main appel prog() une première fois, puis boucle autant de fois qu'on en a besoin
   int y_n;
 
+  printf("    Program created by Tsukasa, founder of DotHackers\n\n");
+  delay(100);
     do
       {
 	prog();

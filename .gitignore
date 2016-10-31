@@ -1,3 +1,4 @@
-#On ignore les .ks et les .txt
+#On ignore les .ks et les .txt et l'exécutable
 *.txt
 *.ks
+Clewrite
