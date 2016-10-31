@@ -1,11 +1,11 @@
 /*
 ** clewrite.c for cleaner&rewriter in /home/jordan.roucom/cleaner
-** 
+**
 ** Made by Jordan Rouco miguez
 ** Login   <jordan.roucom@epitech.net>
-** 
+**
 ** Started on  Sun Oct 16 14:01:35 2016 Jordan Rouco miguez
-** Last update Tue Oct 18 17:52:29 2016 Jordan Rouco miguez
+** Last update Mon Oct 31 14:52:44 2016 Jordan Rouco miguez
 */
 
 #include <unistd.h>
@@ -146,7 +146,7 @@ int	option_1(FILE* filesrc, FILE* filedest)
 {
   char	path[100], path2[100], strings[MAX_LENGTH] = "";
 
-  clearbuffer();	
+  clearbuffer();
   printf("\n     Indiquer le chemin du fichier à copier.(sans l'extension)\n\n-> ");
   readchar(path, 100);
   strcpy(path2, path);									  //Concaténation du nom de fichier avec l'extension voulue
@@ -155,7 +155,7 @@ int	option_1(FILE* filesrc, FILE* filedest)
   if (filesrc != NULL)
     {
       strcat(path2, ".txt");
-      filedest = fopen(path2, "w+");	    
+      filedest = fopen(path2, "w+");
       if (filedest != NULL)
 	{
 	  cleanerstrings(strings, filesrc, filedest);
@@ -176,14 +176,14 @@ int	prog()
   FILE	*filesrc = NULL;
   FILE	*filedest = NULL;
   int	choice = 0;
-  
+
   printf("    Program created by Tsukasa, founder of DotHackers\n\n");
   delay(100);
   printf("     Nettoyage = 1\n     Création du wordwrapping = 2\n\n-> ");
   scanf("%d", &choice);
   if (choice == 1)       //Nettoyage des scripts
     {
-      option_1(filesrc, filedest);      
+      option_1(filesrc, filedest);
     }
   else if (choice == 2)   //Création du wordwrapping
     {
