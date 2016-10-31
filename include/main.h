@@ -1,4 +1,4 @@
-#ifndef MAIN_H_
+#ifndef MAX_LENGTH
 #define MAX_LENGTH	2000
 
 void	delay(unsigned int ms);
@@ -9,8 +9,5 @@ void	cleanerchar(char const *string, FILE *filedest);
 void	cleanerstrings(char *strings, FILE *filesrc, FILE* filedest);
 int	readchar(char *path, int length);
 int	prog();
-int	my_strlen(char *str);
-int	my_putchar(char c);
-int	my_putstr(char *str);
 
 #endif /* MAIN_H_ */

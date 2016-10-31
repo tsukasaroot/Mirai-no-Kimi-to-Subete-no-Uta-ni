@@ -5,14 +5,15 @@
 ** Login   <jordan.roucom@epitech.net>
 **
 ** Started on  Sun Oct 16 14:01:35 2016 Jordan Rouco miguez
-** Last update Mon Oct 31 14:52:44 2016 Jordan Rouco miguez
+** Last update Mon Oct 31 16:12:39 2016 Jordan Rouco miguez
 */
 
 #include <unistd.h>
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
-#include "include/main.h"
+#include "../include/main.h"
+#include "../include/my.h"
 
 void wrapping(char const *string, FILE* filedest)
 {
@@ -191,7 +192,7 @@ int	prog()
     }
   else
     {
-      write(2, "  Option indisponible.\n", my_strlen("  Option indisponible.\n"));
+      put_error("  Option indisponible.\n");
       delay(1000);
       return (-2);
     }
