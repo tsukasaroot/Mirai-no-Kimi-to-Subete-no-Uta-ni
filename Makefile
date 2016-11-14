@@ -4,7 +4,7 @@
 ## Made by Jordan Rouco miguez
 ## Login   <jordan.roucom@epitech.net>
 ##
-## Last update Mon Oct 31 15:04:19 2016 Jordan Rouco miguez
+## Last update Mon Nov 14 13:39:13 2016 Jordan Rouco miguez
 ##
 
 CC	=	gcc
@@ -32,16 +32,19 @@ all:	$(NAME)
 
 $(NAME): $(OBJS)
 	$(OPT)
-	$(CC) $(CFLAGS) $(OBJS) -o $(NAME) lib/my/libmy.a -Ll
+	$(CC) $(CFLAGS) $(OBJS) -o $(NAME) lib/my/libmy.a -Ll -O3
 
 clean:
 	$(RM) $(OBJS)
 	$(OPT) clean
 
-fclean: clean
+nclean:
+	$(RM) $(OBJS)
+
+fclean: nclean
 	$(RM) $(NAME)
 	$(OPT) fclean
 
 re: fclean all
 
-.PHONY: all clean fclean re
+.PHONY: all clean fclean re nclean
