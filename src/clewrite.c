@@ -5,7 +5,7 @@
 ** Login   <jordan.roucom@epitech.net>
 **
 ** Started on  Sun Oct 16 14:01:35 2016 Jordan Rouco miguez
-** Last update Mon Oct 31 16:17:39 2016 Jordan Rouco miguez
+** Last update Mon Nov 21 12:26:27 2016 Jordan Rouco miguez
 */
 
 #include <unistd.h>
@@ -18,7 +18,7 @@
 void wrapping(char const *string, FILE* filedest)
 {
   ///Réecriture des wrapper mot à mot
-  int	cpt = 0, j=0;
+  int	cpt = 0, j = 0;
   char	wrappbegin[MAX_LENGTH]="[wrap text=\"", wrappmid[MAX_LENGTH]="\"]", wrappend[MAX_LENGTH]="[w]\n";
   char	wordcpy[MAX_LENGTH]="";
 
@@ -107,7 +107,7 @@ void	rewrite(char *strings, FILE* filesrc, FILE* filedest)
       fgets(strings, MAX_LENGTH, filesrc);
       if (feof(filesrc))
 	{
-	  printf("\n\n   Opération terminée.\n\n");
+	  my_putstr("\n\n   Opération terminée.\n\n");
 	  fclose(filedest);
 	  delay(3000);
 	}
@@ -119,7 +119,7 @@ int	option_2(FILE* filesrc, FILE* filedest)
   char path[100], path2[100], strings[MAX_LENGTH] = "";
 
   clearbuffer();
-  printf("\n    Indiquer le chemin du fichier a réecrire.(sans l'extension)\n\n-> ");
+  my_putstr("\n    Indiquer le chemin du fichier a réecrire.(sans l'extension)\n\n-> ");
   readchar(path, 100);
   strcpy(path2, path);									  //Concaténation du nom de fichier avec l'extension voulue
   strcat(path, ".txt");
@@ -136,7 +136,7 @@ int	option_2(FILE* filesrc, FILE* filedest)
     }
   else
     {
-      write(2, "  Impossible d'ouvrir le fichier source.\n", my_strlen("  Impossible d'ouvrir le fichier source.\n"));
+      my_put_error("  Impossible d'ouvrir le fichier source.\n");
       delay(3000);
       return (-1);
     }
@@ -148,7 +148,7 @@ int	option_1(FILE* filesrc, FILE* filedest)
   char	path[100], path2[100], strings[MAX_LENGTH] = "";
 
   clearbuffer();
-  printf("\n     Indiquer le chemin du fichier à copier.(sans l'extension)\n\n-> ");
+  my_putstr("\n     Indiquer le chemin du fichier à copier.(sans l'extension)\n\n-> ");
   readchar(path, 100);
   strcpy(path2, path);									  //Concaténation du nom de fichier avec l'extension voulue
   strcat(path, ".ks");
@@ -165,7 +165,7 @@ int	option_1(FILE* filesrc, FILE* filedest)
     }
     else
     {
-      printf("  Impossible d'ouvrir le fichier source.\n");
+      my_put_error("  Impossible d'ouvrir le fichier source.\n");
       delay(3000);
       return -1;
     }
@@ -178,7 +178,7 @@ int	prog()
   FILE	*filedest = NULL;
   int	choice = 0;
 
-  printf("     Nettoyage = 1\n     Création du wordwrapping = 2\n\n-> ");
+  my_putstr("     Nettoyage = 1\n     Création du wordwrapping = 2\n\n-> ");
   scanf("%d", &choice);
   if (choice == 1)       //Nettoyage des scripts
     {
@@ -190,7 +190,7 @@ int	prog()
     }
   else
     {
-      put_error("  Option indisponible.\n");
+      my_put_error("  Option indisponible.\n");
       delay(1000);
       return (-2);
     }

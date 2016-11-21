@@ -5,7 +5,7 @@
 ** Login   <jordan.roucom@epitech.net>
 ** 
 ** Started on  Thu Oct 13 08:16:05 2016 Jordan Rouco miguez
-** Last update Mon Oct 31 15:51:56 2016 Jordan Rouco miguez
+** Last update Mon Nov 21 12:23:43 2016 Jordan Rouco miguez
 */
 
 char	*my_strdup(char *src);
@@ -37,4 +37,4 @@ int	my_square_root(int nb);
 int	my_put_nbr(int nb);
 int	my_find_prime_sup(int nb);
 int	my_putchar(char c);
-void	put_error(char *s);
+void	my_put_error(char *s);
