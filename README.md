@@ -7,7 +7,7 @@ http://dothackers.fansub.ovh/
 
 EN:
 
-This program delete the "Wrap text" to make the scripts easier to translate, he's compatible with Mirai no Kimi to, Subete no Uta ni, 
+This program delete the "Wrap text" to make the scripts easier to translate, it's compatible with Mirai no Kimi to, Subete no Uta ni, 
 and probably with Rin ga Utau, Mirai no Neiro, but it needs checking.
 
 http://dothackers.fansub.ovh/
